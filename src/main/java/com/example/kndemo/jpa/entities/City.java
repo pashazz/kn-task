@@ -1,10 +1,15 @@
 package com.example.kndemo.jpa.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
 @Table(name = "cities")
+@AllArgsConstructor
+@NoArgsConstructor
 public class City {
     @Id
     @GeneratedValue

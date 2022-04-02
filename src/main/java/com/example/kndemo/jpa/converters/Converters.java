@@ -21,8 +21,9 @@ public class Converters {
 
     }
 
-    private static CityDTO cityToCityDTO(City city) {
+    public static CityDTO cityToCityDTO(City city) {
         return CityDTO.builder()
+                .id(city.getId())
                 .name(city.getName())
                 .photo(city.getPhoto())
                 .build();
