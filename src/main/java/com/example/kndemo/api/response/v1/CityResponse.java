@@ -13,5 +13,5 @@ public class CityResponse {
 
     String name;
 
-    String photo;
+    String url;
 }

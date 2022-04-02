@@ -5,8 +5,6 @@ import com.example.kndemo.dto.CityDTO;
 import com.example.kndemo.utils.TestUtils;
 import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class ApiRequestMapperV1Test {
@@ -25,7 +23,7 @@ class ApiRequestMapperV1Test {
         final var expected = CityDTO.builder()
                 .id(TestUtils.UUID_2)
                 .name(TestUtils.CITY_2)
-                .photo(TestUtils.PHOTO_2)
+                .url(TestUtils.PHOTO_2)
                 .build();
 
         //exec
@@ -46,7 +44,7 @@ class ApiRequestMapperV1Test {
         final var expected = CityDTO.builder()
                 .id(TestUtils.UUID_2)
                 .name(null)
-                .photo(TestUtils.PHOTO_2)
+                .url(TestUtils.PHOTO_2)
                 .build();
 
         //exec

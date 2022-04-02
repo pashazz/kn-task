@@ -1,4 +1,14 @@
+server:
+  error:
+    whitelabel:
+      enabled: false
+
+
 spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
   datasource:
     username: ${DB_USER:user}
     password: ${DB_PASSWORD:user}

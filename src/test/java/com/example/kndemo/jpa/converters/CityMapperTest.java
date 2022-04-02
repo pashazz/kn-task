@@ -13,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @Slf4j
 @ExtendWith(MockitoExtension.class)
@@ -67,7 +66,7 @@ class CityMapperTest {
         //Assert
         assertEquals(TestUtils.UUID_1, city.getId());
         assertEquals(TestUtils.CITY_2, city.getName());
-        assertEquals(TestUtils.PHOTO_1, city.getPhoto()); // not changed
+        assertEquals(TestUtils.PHOTO_1, city.getUrl()); // not changed
     }
 
 

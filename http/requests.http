@@ -1,0 +1,4 @@
+GET {{host}}/v1/city/get
+
+###
+GET {{host}}/

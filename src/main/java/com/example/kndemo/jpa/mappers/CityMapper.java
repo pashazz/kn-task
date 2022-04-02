@@ -16,7 +16,7 @@ public interface CityMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "name", source = "name")
-    @Mapping(target = "photo", source = "photo")
+    @Mapping(target = "url", source = "url")
     void patchCityFromDTO(CityDTO dto, @MappingTarget City entity);
 
     CityDTO cityToCityDTO(City city);

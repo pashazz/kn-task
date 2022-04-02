@@ -18,5 +18,5 @@ public class CityDTO {
 
     String name;
 
-    String photo;
+    String url;
 }

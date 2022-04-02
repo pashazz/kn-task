@@ -24,7 +24,7 @@ public class City {
 
     @Column(nullable = false)
     @NotNull
-    private String photo;
+    private String url;
 
 
     public UUID getId() {
@@ -39,11 +39,11 @@ public class City {
         this.name = name;
     }
 
-    public String getPhoto() {
-        return photo;
+    public String getUrl() {
+        return url;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setUrl(String photo) {
+        this.url = photo;
     }
 }

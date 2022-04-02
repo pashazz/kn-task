@@ -9,12 +9,13 @@ import com.example.kndemo.api.response.v1.CitiesFindResponse;
 import com.example.kndemo.api.response.v1.CitiesGetResponse;
 import com.example.kndemo.api.wrapper.v1.ApiWrapper;
 import com.example.kndemo.api.request.v1.CitiesGetRequest;
-import liquibase.repackaged.org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -27,6 +28,7 @@ public class CityController {
     private final CityPatchMethod cityPatchMethod;
     private final CitiesGetMethod cityGetMethod;
 
+
     public CityController(CitiesFindMethod citiesFindMethod,
                           CityPatchMethod cityPatchMethod,
                           CitiesGetMethod cityGetMethod) {
@@ -38,8 +40,9 @@ public class CityController {
     }
 
     @GetMapping(value = "/city/get", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiWrapper<CitiesGetResponse>> getCities(@Valid @RequestBody CitiesGetRequest request) {
-        return ok(cityGetMethod.execute(request));
+    public ResponseEntity<ApiWrapper<CitiesGetResponse>> getCities(@Valid @RequestBody Optional<CitiesGetRequest> request) {
+
+        return ok(cityGetMethod.execute(request.orElse(defaultGetCitiesRequest())));
     }
 
     @GetMapping(value = "/city/find", produces = APPLICATION_JSON_VALUE)
@@ -54,5 +57,12 @@ public class CityController {
 
     private <T> ResponseEntity<ApiWrapper<T>> ok(T response) {
         return ResponseEntity.ok(ApiWrapper.of(response));
+    }
+
+    private CitiesGetRequest defaultGetCitiesRequest() {
+        return CitiesGetRequest.builder()
+                .page(0)
+                .size(10)
+                .build();
     }
 }
