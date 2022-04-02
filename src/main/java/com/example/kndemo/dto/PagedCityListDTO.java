@@ -2,6 +2,7 @@ package com.example.kndemo.dto;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 

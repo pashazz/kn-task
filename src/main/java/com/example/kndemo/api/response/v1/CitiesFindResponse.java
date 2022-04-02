@@ -10,5 +10,6 @@ import java.util.List;
 @Value
 @NonNull
 public class CitiesFindResponse {
+    @NonNull
     List<CityResponse> cities;
 }

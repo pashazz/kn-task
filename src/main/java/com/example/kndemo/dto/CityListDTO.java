@@ -1,9 +1,6 @@
 package com.example.kndemo.dto;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
@@ -13,5 +10,6 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 public class CityListDTO {
+    @NonNull
     List<CityDTO> cities;
 }

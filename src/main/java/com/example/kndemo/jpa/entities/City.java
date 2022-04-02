@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Entity
@@ -14,12 +15,15 @@ public class City {
     @Id
     @GeneratedValue
     @Column(nullable = false)
+    @NotNull
     private UUID id;
 
     @Column(nullable = false)
+    @NotNull
     private String name;
 
     @Column(nullable = false)
+    @NotNull
     private String photo;
 
 

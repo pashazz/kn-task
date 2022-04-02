@@ -39,6 +39,8 @@ dependencies {
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2.2'
 
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+
 
 }
 

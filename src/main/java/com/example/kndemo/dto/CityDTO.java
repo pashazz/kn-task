@@ -14,12 +14,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NonNull
 public class CityDTO {
-    @NonNull
     UUID id;
 
-    @NonNull
     String name;
 
-    @NonNull
     String photo;
 }

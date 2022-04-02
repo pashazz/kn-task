@@ -1,5 +1,6 @@
 package com.example.kndemo.utils;
 
+import com.example.kndemo.api.response.v1.CityResponse;
 import com.example.kndemo.dto.CityDTO;
 import com.example.kndemo.jpa.entities.City;
 
@@ -24,6 +25,11 @@ public class TestUtils {
     public static final List<CityDTO> CITY_DTO_LIST = List.of(
             new CityDTO(UUID_1, CITY_1, PHOTO_1),
             new CityDTO(UUID_2, CITY_2, PHOTO_2)
+    );
+
+    public static final List<CityResponse> CITY_RESPONSE_LIST_V1 = List.of(
+            new CityResponse(UUID_1, CITY_1, PHOTO_1),
+            new CityResponse(UUID_2, CITY_2, PHOTO_2)
     );
 
 
