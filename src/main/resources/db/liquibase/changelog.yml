@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1042022_1000
+      author: Pavel Borisov
+      changes:
+      - createTable:
+          preConditions:
+            onFail: MARK_RAN
+            not:
+              tableExists: cities
+          columns:
+          - column:
+              name: id
+              type: uuid
+              constraints:
+                primaryKey: true
+                nullable: false
+          - column:
+              name: name
+              type: varchar(255)
+              constraints:
+                nullable: false
+          - column:
+              name: url
+              type: text
+          tableName: cities

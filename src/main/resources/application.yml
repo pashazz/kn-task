@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    username: ${DB_USER:user}
+    password: ${DB_PASSWORD:user}
+    url: jdbc:${DB_DBMS:postgresql}://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:cities}
+  liquibase:
+    change-log: classpath:/db/liquibase/changelog.yml
+
+
