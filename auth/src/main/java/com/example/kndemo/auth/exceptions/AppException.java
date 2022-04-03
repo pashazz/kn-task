@@ -1,18 +1,11 @@
 package com.example.kndemo.auth.exceptions;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-public class AppException extends RuntimeException {
-
-    private final HttpStatus status;
+public class AppException extends ResponseStatusException {
 
     public AppException(String message, HttpStatus status) {
-        super(message);
-        this.status = status;
+        super(status, message);
     }
-
-    public HttpStatus getStatus() {
-        return status;
-    }
-
 }

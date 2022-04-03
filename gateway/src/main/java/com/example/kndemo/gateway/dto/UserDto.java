@@ -1,4 +1,4 @@
-package com.example.kndemo.gateway.config;
+package com.example.kndemo.gateway.dto;
 
 
 import lombok.AllArgsConstructor;

@@ -1,5 +1,10 @@
 server:
+  error:
+    include-message: always # to show exception error reason
   port: 8080
+
+kndemo:
+  auth-header: "X-User-Token"
 
 management:
   endpoint.gateway.enabled: true
@@ -20,7 +25,7 @@ spring:
         - id: auth
           uri: lb://auth
           predicates:
-            - Path=/auth/signIn,/auth/signIn
+            - Path=/auth/**
 
 eureka:
   client:

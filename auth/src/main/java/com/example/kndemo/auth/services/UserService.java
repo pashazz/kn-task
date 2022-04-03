@@ -9,6 +9,7 @@ import com.example.kndemo.auth.yaml.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     
-    @Value("${security.jwt.token.secret-key:secret-key}")
+    @Value("${jwt.secret-key:secret-key}")
     private String secretKey;
 
     @PostConstruct
@@ -50,19 +51,23 @@ public class UserService {
     }
 
     public UserDto validateToken(String token) {
-        String login = Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-        Optional<User> userOpt = userRepository.findByLogin(login);
+        try {
+            String login = Jwts.parser()
+                    .setSigningKey(secretKey)
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();
+            Optional<User> userOpt = userRepository.findByLogin(login);
 
-        if (userOpt.isEmpty()) {
-            throw new AppException("User not found", HttpStatus.NOT_FOUND);
+            if (userOpt.isEmpty()) {
+                throw new AppException("User not found", HttpStatus.NOT_FOUND);
+            }
+
+            User user = userOpt.get();
+            return userMapper.toUserDto(user, createToken(user));
+        } catch (SignatureException e) {
+            throw new AppException("Invalid JWT", HttpStatus.UNAUTHORIZED);
         }
-
-        User user = userOpt.get();
-        return userMapper.toUserDto(user, createToken(user));
     }
 
 
