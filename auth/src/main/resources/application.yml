@@ -9,6 +9,9 @@ server:
   error:
     include-message: always # to show exception error reason
 
+jwt:
+  secret-key: ololo
+
 management:
   health:
     livenessState.enabled: true
@@ -20,6 +23,10 @@ kndemo:
     users:
       - login: pasha
         password: pasha
+        canEdit: true
+      - login: mike
+        password: michael
+        canEdit: false
 
 eureka:
   client:

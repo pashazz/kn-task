@@ -6,6 +6,7 @@ import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,11 +14,10 @@ import java.util.UUID;
 @Builder
 @Value
 public class CityPatchRequest {
-    @NotBlank(message = "city name can't be empty")
     String name;
-    @NotBlank(message = "photo url can't be empty")
     String url;
-    @NotBlank(message = "ID can't be blank")
+
+    @NotNull
     @NonNull
     UUID id;
 }

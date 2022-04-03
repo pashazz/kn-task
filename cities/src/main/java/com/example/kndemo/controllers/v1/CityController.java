@@ -7,11 +7,18 @@ import com.example.kndemo.api.request.v1.CitiesFindRequest;
 import com.example.kndemo.api.request.v1.CityPatchRequest;
 import com.example.kndemo.api.response.v1.CitiesFindResponse;
 import com.example.kndemo.api.response.v1.CitiesGetResponse;
-import com.example.kndemo.api.wrapper.v1.ApiWrapper;
+import com.example.kndemo.api.wrapper.v1.ApiWrapperV1;
 import com.example.kndemo.api.request.v1.CitiesGetRequest;
+import com.example.kndemo.controllers.HeaderHelper;
+import com.example.kndemo.services.TokenService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 
@@ -22,41 +29,44 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @Validated
 @RequestMapping("v1/")
+@RequiredArgsConstructor
+@Slf4j
 public class CityController {
 
     private final CitiesFindMethod citiesFindMethod;
     private final CityPatchMethod cityPatchMethod;
     private final CitiesGetMethod cityGetMethod;
-
-
-    public CityController(CitiesFindMethod citiesFindMethod,
-                          CityPatchMethod cityPatchMethod,
-                          CitiesGetMethod cityGetMethod) {
-
-
-        this.citiesFindMethod = citiesFindMethod;
-        this.cityPatchMethod = cityPatchMethod;
-        this.cityGetMethod = cityGetMethod;
-    }
+    private final HeaderHelper headerHelper = HeaderHelper.INSTANCE;
+    private final TokenService tokenService;
 
     @GetMapping(value = "/city/get", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiWrapper<CitiesGetResponse>> getCities(@Valid @RequestBody Optional<CitiesGetRequest> request) {
+    public ResponseEntity<ApiWrapperV1<CitiesGetResponse>> getCities(@Valid @RequestBody Optional<CitiesGetRequest> request) {
 
         return ok(cityGetMethod.execute(request.orElse(defaultGetCitiesRequest())));
     }
 
     @GetMapping(value = "/city/find", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiWrapper<CitiesFindResponse>> findCities(@Valid @RequestBody CitiesFindRequest request) {
+    public ResponseEntity<ApiWrapperV1<CitiesFindResponse>> findCities(
+            @Valid @RequestBody CitiesFindRequest request
+    ) {
         return ok(citiesFindMethod.execute(request));
     }
 
     @PatchMapping(value = "/city", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiWrapper<Void>> patchCity(@Valid @RequestBody CityPatchRequest request) {
-        return ok(cityPatchMethod.execute(request));
+    public ResponseEntity<ApiWrapperV1<Void>> patchCity(@Valid @RequestBody CityPatchRequest request,
+                                                        @RequestHeader HttpHeaders headers) {
+        boolean canEdit = headerHelper.getToken(headers)
+                .map(tokenService::canEditCities)
+                .orElse(false);
+        if (canEdit) {
+            return ok(cityPatchMethod.execute(request));
+        } else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
     }
 
-    private <T> ResponseEntity<ApiWrapper<T>> ok(T response) {
-        return ResponseEntity.ok(ApiWrapper.of(response));
+    private <T> ResponseEntity<ApiWrapperV1<T>> ok(T response) {
+        return ResponseEntity.ok(ApiWrapperV1.of(response));
     }
 
     private CitiesGetRequest defaultGetCitiesRequest() {

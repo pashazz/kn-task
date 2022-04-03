@@ -3,9 +3,6 @@ server:
     include-message: always # to show exception error reason
   port: 8080
 
-kndemo:
-  auth-header: "X-User-Token"
-
 management:
   endpoint.gateway.enabled: true
   endpoints.web.exposure.include: gateway

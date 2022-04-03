@@ -4,6 +4,9 @@ server:
   servlet:
     context-path: /cities
 
+jwt:
+  secret-key: ololo
+
 management:
   health:
     livenessState.enabled: true

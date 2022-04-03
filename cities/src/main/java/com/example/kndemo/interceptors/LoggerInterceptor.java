@@ -1,5 +1,7 @@
-package com.example.kndemo.config;
+package com.example.kndemo.interceptors;
 
+import com.example.kndemo.constants.CommonConstants;
+import com.example.kndemo.controllers.HeaderHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -9,10 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
-class LoggerInterceptor  implements HandlerInterceptor {
+public class LoggerInterceptor  implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("[HANDLE_START] request: {}", request.getPathInfo());
+        log.info("[HANDLE_START] requestId: {}", HeaderHelper.INSTANCE.getRequestId(request));
         return true;
     }
 
@@ -23,6 +25,6 @@ class LoggerInterceptor  implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        log.info("[HANDLE_FINISH] request: {}; response: {}", request.getPathInfo(), response.getStatus());
+        log.info("[HANDLE_FINISH] requestId: {}; response: {}", HeaderHelper.INSTANCE.getRequestId(request), response.getStatus());
     }
 }

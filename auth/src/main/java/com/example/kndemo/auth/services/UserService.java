@@ -6,6 +6,7 @@ import com.example.kndemo.auth.exceptions.AppException;
 import com.example.kndemo.auth.mappers.UserMapper;
 import com.example.kndemo.auth.repository.UserRepository;
 import com.example.kndemo.auth.yaml.entity.User;
+import com.example.kndemo.constants.CommonConstants;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,7 @@ import java.nio.CharBuffer;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Optional;
+import java.util.concurrent.Callable;
 
 @Service
 @RequiredArgsConstructor
@@ -31,10 +33,10 @@ public class UserService {
 
     @PostConstruct
     protected void init() {
-         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+         //secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    // Public API
+    //region Public API
 
     public UserDto signIn(CredentialsDto credentialsDto) {
         var user = userRepository.findByLogin(credentialsDto.getLogin())
@@ -48,7 +50,7 @@ public class UserService {
     }
 
     public UserDto validateToken(String token) {
-        try {
+        return tryWithJwt(() -> {
             String login = Jwts.parser()
                     .setSigningKey(secretKey)
                     .parseClaimsJws(token)
@@ -62,17 +64,14 @@ public class UserService {
 
             User user = userOpt.get();
             return userMapper.toUserDto(user, createToken(user));
-        } catch (SignatureException e) {
-            throw new AppException("Invalid JWT", HttpStatus.UNAUTHORIZED);
-        } catch (ExpiredJwtException e) {
-            throw new AppException(e.getMessage(), HttpStatus.UNAUTHORIZED);
-        }
+        });
     }
 
-
-
+    //region private API
     private String createToken(User user) {
-        Claims claims = Jwts.claims().setSubject(user.getLogin());
+        Claims claims = Jwts.claims()
+                .setSubject(user.getLogin());
+        fillCanReadClaim(user, claims);
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + 3600000); // 1 hour
@@ -85,4 +84,25 @@ public class UserService {
                 .compact();
     }
 
+    private void fillCanReadClaim(User user,Claims claims) {
+        claims.put(CommonConstants.JWT_CLAIM_CAN_EDIT_NAME,
+                user.isCanEdit() ? CommonConstants.JWT_CLAIM_CAN_EDIT_TRUE
+                        : CommonConstants.JWT_CLAIM_CAN_EDIT_FALSE);
+    }
+
+    private <V> V tryWithJwt(Callable<V> run) {
+        try {
+           return run.call();
+        } catch (SignatureException e) {
+            throw new AppException("Invalid JWT", HttpStatus.UNAUTHORIZED);
+        } catch (ExpiredJwtException e) {
+            throw new AppException(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        } catch (RuntimeException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    //endregion
 }
