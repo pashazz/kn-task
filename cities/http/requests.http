@@ -1,4 +1,12 @@
 GET {{host}}/v1/city/get
 
-###
-GET {{host}}/
+
+### Patch the city
+PATCH {{host}}/v1/city
+Content-Type: application/json
+
+{
+  "id": "some_id",
+  "name": "new_name",
+  "url": "new_url"
+}

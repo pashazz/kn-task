@@ -4,6 +4,7 @@ import com.example.kndemo.api.wrapper.v1.ApiWrapper;
 import com.example.kndemo.exceptions.CityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -34,14 +35,19 @@ public class ExceptionAdvice {
                         "Not found"));
     }
 
-   /** @ExceptionHandler(NoHandlerFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public HashMap<String, String> handleNoHandlerFound(NoHandlerFoundException e, WebRequest request) {
-        HashMap<String, String> response = new HashMap<>();
-        response.put("status", "fail");
-        response.put("message", e.getLocalizedMessage());
-        return response;
+    @ExceptionHandler({CityNotFoundException.class})
+    public ResponseEntity<ApiWrapper<Void>> cityNotFoundHandler(CityNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiWrapper.ofError(
+                        HttpStatus.NOT_FOUND.name(),
+                        ex.getMessage()));
     }
 
-    **/
+    @ExceptionHandler({HttpMessageNotReadableException.class})
+    public ResponseEntity<ApiWrapper<Void>> badRequestHandler(HttpMessageNotReadableException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiWrapper.ofError(
+                        HttpStatus.BAD_REQUEST.name(),
+                        ex.getMessage()));
+    }
 }

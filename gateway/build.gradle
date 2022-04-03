@@ -46,7 +46,7 @@ dependencyManagement {
     }
 }
 
-group = 'com.example.kndemo'
+group = 'com.example.kndemo.gateway'
 version = '0.0.1-SNAPSHOT'
 description = 'gateway'
 java.sourceCompatibility = JavaVersion.VERSION_11
