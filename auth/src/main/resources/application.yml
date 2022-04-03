@@ -6,6 +6,8 @@ server:
   port: 0
   servlet:
     context-path: /auth
+  error:
+    include-message: always # to show exception error reason
 
 management:
   health:

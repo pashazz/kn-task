@@ -1,6 +1,7 @@
-package com.example.kndemo.gateway.config;
+package com.example.kndemo.gateway.gatewayfilters;
 
 
+import com.example.kndemo.gateway.clients.AuthClient;
 import com.example.kndemo.gateway.dto.UserDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -8,20 +9,20 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> {
 
-    private final WebClient.Builder webClientBuilder;
+    private final AuthClient authClient;
 
     @Value("${kndemo.auth-header:X-Token}")
     private String authHeaderName;
 
-    public AuthFilter(WebClient.Builder webClientBuilder) {
+
+    public AuthFilter(AuthClient authClient) {
         super(Config.class);
-        this.webClientBuilder = webClientBuilder;
+        this.authClient = authClient;
     }
 
     @Override
@@ -40,10 +41,12 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect authorization structure");
             }
 
-            return webClientBuilder.build()
+            /**return webClientBuilder.build()
                     .post()
                     .uri("http://auth/auth/validateToken?token=" + parts[1])
-                    .retrieve().bodyToMono(UserDto.class)
+                    .retrieve().bodyToMono(UserDto.class) **/
+            String token = parts[1];
+            return authClient.validateToken(token)
                     .map(userDto -> {
                         exchange.getRequest()
                                 .mutate()

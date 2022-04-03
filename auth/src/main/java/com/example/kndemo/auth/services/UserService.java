@@ -6,10 +6,7 @@ import com.example.kndemo.auth.exceptions.AppException;
 import com.example.kndemo.auth.mappers.UserMapper;
 import com.example.kndemo.auth.repository.UserRepository;
 import com.example.kndemo.auth.yaml.entity.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -67,6 +64,8 @@ public class UserService {
             return userMapper.toUserDto(user, createToken(user));
         } catch (SignatureException e) {
             throw new AppException("Invalid JWT", HttpStatus.UNAUTHORIZED);
+        } catch (ExpiredJwtException e) {
+            throw new AppException(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
     }
 
