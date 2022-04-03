@@ -17,7 +17,7 @@ class ApiRequestMapperV1Test {
         final var patchRequest = CityPatchRequest.builder()
                 .id(TestUtils.UUID_2)
                 .name(TestUtils.CITY_2)
-                .photo(TestUtils.PHOTO_2)
+                .url(TestUtils.PHOTO_2)
                 .build();
 
         final var expected = CityDTO.builder()
@@ -38,7 +38,7 @@ class ApiRequestMapperV1Test {
                 //arrange
         final var patchRequest = CityPatchRequest.builder()
                 .id(TestUtils.UUID_2)
-                .photo(TestUtils.PHOTO_2)
+                .url(TestUtils.PHOTO_2)
                 .build();
 
         final var expected = CityDTO.builder()

@@ -15,8 +15,8 @@ import java.util.UUID;
 public class CityPatchRequest {
     @NotBlank(message = "city name can't be empty")
     String name;
-    @NotBlank(message = "photo can't be empty")
-    String photo;
+    @NotBlank(message = "photo url can't be empty")
+    String url;
     @NotBlank(message = "ID can't be blank")
     @NonNull
     UUID id;

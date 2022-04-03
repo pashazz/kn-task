@@ -5,3 +5,5 @@
 rootProject.name = 'kndemo'
 include 'cities'
 include 'gateway'
+include 'auth'
+include 'discovery'
