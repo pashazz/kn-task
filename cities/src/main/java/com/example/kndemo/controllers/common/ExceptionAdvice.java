@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 @RestControllerAdvice
@@ -29,6 +30,12 @@ public class ExceptionAdvice {
                 .body(ApiWrapperV1.ofError(
                         HttpStatus.NOT_FOUND.name(),
                         "Not found"));
+    }
+
+    @ExceptionHandler({ResponseStatusException.class})
+    public ResponseEntity<ApiWrapperV1<Void>> responseStatusHandler(ResponseStatusException e) {
+        return  ResponseEntity.status(e.getStatus())
+                .body(ApiWrapperV1.ofError(e.getStatus().name(), e.getMessage()));
     }
 
     @ExceptionHandler({CityNotFoundException.class})

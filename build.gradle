@@ -5,4 +5,14 @@ plugins {
   id 'idea'
   id 'java'
 }
-**/
+ **/
+plugins {
+    id 'java'
+}
+allprojects {
+
+    jar {
+	      enabled = false
+    }
+
+}

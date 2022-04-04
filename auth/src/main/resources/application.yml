@@ -31,5 +31,5 @@ kndemo:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://${DISCOVERY_HOST:localhost}:8761/eureka
 
