@@ -24,7 +24,7 @@ This application consist of 3 microservices:
 
 ## Users
 
-Users are configured in YAML, [[./auth/src/main/resources/application.yml]], section kndemo.auth.users
+Users are configured in YAML: auth -> [application.yml](./auth/src/main/resources/application.yml]), section kndemo.auth.users
 
 set canEdit to false to disable city editing
 
