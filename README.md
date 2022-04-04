@@ -59,7 +59,7 @@ Content-Type: application/json
 ```http request
 POST http://localhost:8080/auth/validateToken?token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwYXNoYSIsIkNBTl9FRElUIjoiVFJVRSIsImlhdCI6MTY0OTAzNTQxOCwiZXhwIjoxNjQ5MDM5MDE4fQ.YwKBuSCMl9VTkA6nFiSl2gvjCQPWsYTnRckZSEu6c8A
 ```
-
+Use it in bearer authorization later on
 
 ### list all - 1st page
 ```http request
