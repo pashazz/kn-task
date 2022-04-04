@@ -15,6 +15,7 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<ApiWrapperV1<Void>> defaultExcHandler(Throwable t){
+        t.printStackTrace();
         return ResponseEntity.internalServerError()
                 .body(ApiWrapperV1.ofError(
                         HttpStatus.INTERNAL_SERVER_ERROR.name(),

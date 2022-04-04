@@ -39,13 +39,13 @@ public class CityController {
     private final HeaderHelper headerHelper = HeaderHelper.INSTANCE;
     private final TokenService tokenService;
 
-    @GetMapping(value = "/city/get", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/city/all", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiWrapperV1<CitiesGetResponse>> getCities(@Valid @RequestBody Optional<CitiesGetRequest> request) {
 
         return ok(cityGetMethod.execute(request.orElse(defaultGetCitiesRequest())));
     }
 
-    @GetMapping(value = "/city/find", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/city/filter", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiWrapperV1<CitiesFindResponse>> findCities(
             @Valid @RequestBody CitiesFindRequest request
     ) {

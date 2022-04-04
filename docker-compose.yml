@@ -8,20 +8,27 @@ services:
       POSTGRES_DB: cities
 
   discovery:
-    image: discovery
+    #image: discovery
     healthcheck:
       test: "curl --fail --silent localhost:8761/actuator/health | grep UP || exit 1"
       interval: 20s
       timeout: 5s
       retries: 5
-
+    build:
+      context: ./discovery
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
 
   cities:
-    image: cities
+    #image: cities
     restart: always
     depends_on:
       discovery:
         condition: service_healthy
+    build:
+      context: cities
+      dockerfile: Dockerfile
     environment:
       DB_USER: user
       DB_PASSWORD: user
@@ -29,22 +36,33 @@ services:
       DB_PORT: 5432
       DB_NAME: cities
       DISCOVERY_HOST: discovery
+      CSV_IMPORT: /mnt/cities.csv
+    volumes:
+      - type: bind
+        source: ./init
+        target: /mnt
 
   auth:
-    image: auth
+    #image: auth
     restart: always
     depends_on:
       discovery:
         condition: service_healthy
+    build:
+      context: auth
+      dockerfile: Dockerfile
     environment:
       DISCOVERY_HOST: discovery
 
   gateway:
-    image: gateway
+    #image: gateway
     restart: always
     depends_on:
       discovery:
         condition: service_healthy
+    build:
+      context: gateway
+      dockerfile: Dockerfile
     environment:
       DISCOVERY_HOST: discovery
     ports:

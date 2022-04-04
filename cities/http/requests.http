@@ -1,4 +1,4 @@
-GET {{host}}/v1/city/get
+
 
 
 ### Patch the city

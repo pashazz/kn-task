@@ -36,14 +36,18 @@ public class JPACityService implements CityService {
     @Override
     @Transactional(readOnly = true)
     public PagedCityListDTO getCities(int page, int size) {
+        log.info("getCities: page: {}: size: {}", page, size);
         var data = repo.findAll(PageRequest.of(page,size));
+        log.info("getCities: obtained {} elements on page {}", data.getNumberOfElements(), data.getNumber());
         return cityMapper.createPagedCityListDTO(data);
     }
 
     @Override
     @Transactional(readOnly = true)
     public CityListDTO findCities(String query) {
+        log.info("findCities: searching by query: {}", query);
         var data = repo.findCityByNameStartingWithIgnoreCase(query);
+        log.info("findCities: found entries: {}", data.size());
         return cityMapper.createCityListDTO(data);
     }
 
