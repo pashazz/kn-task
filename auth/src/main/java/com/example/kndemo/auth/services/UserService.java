@@ -1,5 +1,6 @@
 package com.example.kndemo.auth.services;
 
+import com.example.kndemo.auth.config.AuthConfig;
 import com.example.kndemo.auth.dto.CredentialsDto;
 import com.example.kndemo.auth.dto.UserDto;
 import com.example.kndemo.auth.exceptions.AppException;
@@ -27,6 +28,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final AuthConfig authConfig;
     
     @Value("${jwt.secret-key:secret-key}")
     private String secretKey;
@@ -74,7 +76,7 @@ public class UserService {
         fillCanReadClaim(user, claims);
 
         Date now = new Date();
-        Date validity = new Date(now.getTime() + 3600000); // 1 hour
+        Date validity = new Date(now.getTime() + authConfig.getTokenExpirationTimeMs()); // 1 hour
 
         return Jwts.builder()
                 .setClaims(claims)

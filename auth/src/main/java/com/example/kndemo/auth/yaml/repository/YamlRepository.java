@@ -1,7 +1,7 @@
 package com.example.kndemo.auth.yaml.repository;
 
 import com.example.kndemo.auth.repository.UserRepository;
-import com.example.kndemo.auth.yaml.config.AuthConfigurationProperties;
+import com.example.kndemo.auth.config.AuthConfig;
 import com.example.kndemo.auth.yaml.entity.User;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class YamlRepository implements UserRepository {
     private Map<String, User> users;
 
 
-    public YamlRepository(AuthConfigurationProperties properties) {
+    public YamlRepository(AuthConfig properties) {
         users = new HashMap<>();
         for (var user: properties.getUsers()) {
             users.put(user.getLogin(), user);

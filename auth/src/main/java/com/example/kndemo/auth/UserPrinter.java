@@ -1,6 +1,6 @@
 package com.example.kndemo.auth;
 
-import com.example.kndemo.auth.yaml.config.AuthConfigurationProperties;
+import com.example.kndemo.auth.config.AuthConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ import javax.annotation.PostConstruct;
 public class UserPrinter {
 
     @Autowired
-    private AuthConfigurationProperties properties;
+    private AuthConfig properties;
 
     @PostConstruct
     void init() {
